@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        label .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-group.has-error input,
+        .form-group.has-error textarea {
+            border-color: #e74c3c;
+        }
+
+        .form-group.has-error .error {
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+            text-align: center;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .error-content {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-bottom: 10px;
+            max-height: 100px;
+            overflow: hidden;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .error-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .copy-btn {
+            background-color: #721c24;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #5a161c;
+        }
+
+        .error-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-btn.success {
+            background-color: #28a745;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Profile</h1>
+        <p class="subtitle">Fill in the form below to create a new profile</p>
+        
+        <div id="message" class="message"></div>
+
+        <form id="profileForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name <span class="required">*</span></label>
+                    <input type="text" id="firstName" name="firstName" required>
+                    <div class="error">First name is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name <span class="required">*</span></label>
+                    <input type="text" id="lastName" name="lastName" required>
+                    <div class="error">Last name is required</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+                <div class="error">Please enter a valid email address</div>
+            </div>
+
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="e.g., +1-234-567-8900">
+                <div class="error">Please enter a valid phone number</div>
+            </div>
+
+            <div class="form-group">
+                <label for="birthDate">Birth Date <span class="required">*</span></label>
+                <input type="date" id="birthDate" name="birthDate" required>
+                <div class="error">Birth date is required</div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" placeholder="Street, City, State, ZIP">
+                <div class="error">Please enter a valid address</div>
+            </div>
+
+            <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" name="bio" placeholder="Tell us about yourself..."></textarea>
+                <div class="error">Please enter a valid bio</div>
+            </div>
+
+            <button type="submit" id="submitBtn">Create Profile</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('profileForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const messageDiv = document.getElementById('message');
+
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            const formGroups = document.querySelectorAll('.form-group');
+            
+            formGroups.forEach(group => {
+                group.classList.remove('has-error');
+            });
+
+            // Validate required fields
+            const firstName = document.getElementById('firstName');
+            const lastName = document.getElementById('lastName');
+            const email = document.getElementById('email');
+            const birthDate = document.getElementById('birthDate');
+
+            if (!firstName.value.trim()) {
+                firstName.closest('.form-group').classList.add('has-error');
+                isValid = false;
+            }
+
+            if (!lastName.value.trim()) {
+                lastName.closest('.form-group').classList.add('has-error');
+                isValid = false;
+            }
+
+            if (!email.value.trim() || !isValidEmail(email.value)) {
+                email.closest('.form-group').classList.add('has-error');
+                isValid = false;
+            }
+
+            if (!birthDate.value) {
+                birthDate.closest('.form-group').classList.add('has-error');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        let fullErrorMessage = '';
+
+        function showMessage(message, type) {
+            messageDiv.className = `message ${type}`;
+            
+            if (type === 'error') {
+                fullErrorMessage = message;
+                const lines = message.split('\n');
+                const first5Lines = lines.slice(0, 5).join('\n');
+                const hasMore = lines.length > 5;
+                
+                messageDiv.innerHTML = `
+                    <div class="error-content">${first5Lines}${hasMore ? '\n...' : ''}</div>
+                    <div class="error-actions">
+                        <button class="error-btn copy-btn" onclick="copyError()">📋 Copy Full Error</button>
+                    </div>
+                `;
+            } else {
+                messageDiv.textContent = message;
+            }
+            
+            messageDiv.style.display = 'block';
+            
+            // Scroll to message
+            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        async function copyError() {
+            try {
+                await navigator.clipboard.writeText(fullErrorMessage);
+                const copyBtn = document.querySelector('.copy-btn');
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '✓ Copied!';
+                copyBtn.classList.add('success');
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    copyBtn.classList.remove('success');
+                }, 2000);
+            } catch (err) {
+                alert('Failed to copy error message');
+            }
+        }
+
+        function hideMessage() {
+            messageDiv.style.display = 'none';
+        }
+
+        // Handle form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessage();
+
+            if (!validateForm()) {
+                showMessage('Please fill in all required fields correctly.', 'error');
+                return;
+            }
+
+            // Prepare data
+            const formData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phoneNumber: document.getElementById('phoneNumber').value.trim() || null,
+                address: document.getElementById('address').value.trim() || null,
+                bio: document.getElementById('bio').value.trim() || null,
+                birthDate: document.getElementById('birthDate').value.replace(/^(\d{2})(\d{2})/, '$2')
+            };
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating...';
+
+            try {
+                const response = await fetch('/profiles', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showMessage(`Profile created successfully! ID: ${result.id}`, 'success');
+                    form.reset();
+                } else {
+                    const error = await response.text();
+                    showMessage(`Error: ${error || 'Failed to create profile'}`, 'error');
+                }
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Profile';
+            }
+        });
+
+        // Real-time validation
+        const inputs = form.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('blur', () => {
+                if (input.hasAttribute('required') && !input.value.trim()) {
+                    input.closest('.form-group').classList.add('has-error');
+                } else if (input.type === 'email' && input.value && !isValidEmail(input.value)) {
+                    input.closest('.form-group').classList.add('has-error');
+                } else {
+                    input.closest('.form-group').classList.remove('has-error');
+                }
+            });
+
+            input.addEventListener('input', () => {
+                if (input.closest('.form-group').classList.contains('has-error')) {
+                    input.closest('.form-group').classList.remove('has-error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
