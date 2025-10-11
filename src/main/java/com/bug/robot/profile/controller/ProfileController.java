@@ -3,6 +3,7 @@ package com.bug.robot.profile.controller;
 import com.bug.robot.profile.domain.Profile;
 import com.bug.robot.profile.dto.ProfileRequestDTO;
 import com.bug.robot.profile.service.ProfileService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +34,13 @@ public class ProfileController {
     }
 
     @PostMapping
-    public Profile create(@RequestBody ProfileRequestDTO dto) {
+    public Profile create(@Valid @RequestBody ProfileRequestDTO dto) {
         logger.info("creating {}", dto);
         return service.create(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Profile> update(@PathVariable Long id, @RequestBody ProfileRequestDTO dto) {
+    public ResponseEntity<Profile> update(@PathVariable Long id, @Valid @RequestBody ProfileRequestDTO dto) {
         return service.update(id, dto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

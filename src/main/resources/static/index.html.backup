@@ -389,7 +389,7 @@
                 phoneNumber: document.getElementById('phoneNumber').value.trim() || null,
                 address: document.getElementById('address').value.trim() || null,
                 bio: document.getElementById('bio').value.trim() || null,
-                birthDate: document.getElementById('birthDate').value
+                birthDate: document.getElementById('birthDate').value.replace(/^(\d{2})(\d{2})/, '$2')
             };
 
             // Disable submit button

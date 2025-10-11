@@ -6,6 +6,7 @@ import com.bug.robot.profile.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,17 @@ public class ProfileService {
         profile.setPhoneNumber(dto.getPhoneNumber());
         profile.setAddress(dto.getAddress());
         profile.setBio(dto.getBio());
-        profile.setBirthDate(LocalDate.parse(dto.getBirthDate(), DateTimeFormatter.ISO_LOCAL_DATE));
+        
+        // Add better date parsing with error handling
+        try {
+            LocalDate birthDate = LocalDate.parse(dto.getBirthDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+            profile.setBirthDate(birthDate);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException(
+                String.format("Invalid birth date format: '%s'. Expected format: YYYY-MM-DD (e.g., 2025-01-15)", 
+                dto.getBirthDate()), e);
+        }
+        
         return repository.save(profile);
     }
 
@@ -46,7 +57,17 @@ public class ProfileService {
             existing.setPhoneNumber(dto.getPhoneNumber());
             existing.setAddress(dto.getAddress());
             existing.setBio(dto.getBio());
-            existing.setBirthDate(LocalDate.parse(dto.getBirthDate(), DateTimeFormatter.ISO_LOCAL_DATE));
+            
+            // Add better date parsing with error handling
+            try {
+                LocalDate birthDate = LocalDate.parse(dto.getBirthDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+                existing.setBirthDate(birthDate);
+            } catch (DateTimeParseException e) {
+                throw new IllegalArgumentException(
+                    String.format("Invalid birth date format: '%s'. Expected format: YYYY-MM-DD (e.g., 2025-01-15)", 
+                    dto.getBirthDate()), e);
+            }
+            
             return repository.save(existing);
         });
     }

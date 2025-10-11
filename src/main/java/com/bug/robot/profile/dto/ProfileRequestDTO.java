@@ -2,6 +2,7 @@ package com.bug.robot.profile.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public class ProfileRequestDTO {
 
@@ -22,6 +23,7 @@ public class ProfileRequestDTO {
     private String bio;
 
     @NotBlank(message = "Birth date is required")
+    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "Birth date must be in YYYY-MM-DD format")
     private String birthDate;
 
     public String getFirstName() {
