@@ -14,6 +14,9 @@ import java.util.Optional;
 public class ProfileService {
 
     private final ProfileRepository repository;
+    
+    // Custom formatter for 'yy-MM-dd' format (e.g., '25-10-17')
+    private static final DateTimeFormatter CUSTOM_DATE_FORMATTER = DateTimeFormatter.ofPattern("yy-MM-dd");
 
     public ProfileService(ProfileRepository repository) {
         this.repository = repository;
@@ -36,13 +39,13 @@ public class ProfileService {
         profile.setAddress(dto.getAddress());
         profile.setBio(dto.getBio());
         
-        // Add better date parsing with error handling
+        // Parse date with custom formatter for 'yy-MM-dd' format
         try {
-            LocalDate birthDate = LocalDate.parse(dto.getBirthDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+            LocalDate birthDate = LocalDate.parse(dto.getBirthDate(), CUSTOM_DATE_FORMATTER);
             profile.setBirthDate(birthDate);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(
-                String.format("Invalid birth date format: '%s'. Expected format: YYYY-MM-DD (e.g., 2025-01-15)", 
+                String.format("Invalid birth date format: '%s'. Expected format: YY-MM-DD (e.g., 25-10-17)", 
                 dto.getBirthDate()), e);
         }
         
@@ -58,13 +61,13 @@ public class ProfileService {
             existing.setAddress(dto.getAddress());
             existing.setBio(dto.getBio());
             
-            // Add better date parsing with error handling
+            // Parse date with custom formatter for 'yy-MM-dd' format
             try {
-                LocalDate birthDate = LocalDate.parse(dto.getBirthDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+                LocalDate birthDate = LocalDate.parse(dto.getBirthDate(), CUSTOM_DATE_FORMATTER);
                 existing.setBirthDate(birthDate);
             } catch (DateTimeParseException e) {
                 throw new IllegalArgumentException(
-                    String.format("Invalid birth date format: '%s'. Expected format: YYYY-MM-DD (e.g., 2025-01-15)", 
+                    String.format("Invalid birth date format: '%s'. Expected format: YY-MM-DD (e.g., 25-10-17)", 
                     dto.getBirthDate()), e);
             }
             

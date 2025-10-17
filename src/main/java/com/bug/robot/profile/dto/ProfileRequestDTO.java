@@ -23,7 +23,7 @@ public class ProfileRequestDTO {
     private String bio;
 
     @NotBlank(message = "Birth date is required")
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "Birth date must be in YYYY-MM-DD format")
+    @Pattern(regexp = "^\\d{2}-\\d{2}-\\d{2}$", message = "Birth date must be in YY-MM-DD format (e.g., 25-10-17)")
     private String birthDate;
 
     public String getFirstName() {
