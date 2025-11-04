@@ -1,10 +1,9 @@
 package com.bug.robot.profile.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Profile {
@@ -20,6 +19,9 @@ public class Profile {
     private String phoneNumber;
     private String address;
     private String bio;
+    
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Widget> widgets = new ArrayList<>();
 
     // Getters and setters
     public Long getId() {
@@ -84,5 +86,13 @@ public class Profile {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+    
+    public List<Widget> getWidgets() {
+        return widgets;
+    }
+    
+    public void setWidgets(List<Widget> widgets) {
+        this.widgets = widgets;
     }
 }
