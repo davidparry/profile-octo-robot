@@ -1,0 +1,20 @@
+package com.bug.robot.widget.exception;
+
+/**
+ * Exception thrown when a profile is not found.
+ * Follows best practices for custom exception handling.
+ */
+public class ProfileNotFoundException extends RuntimeException {
+
+    public ProfileNotFoundException(String message) {
+        super(message);
+    }
+
+    public ProfileNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ProfileNotFoundException(Long profileId) {
+        super("Profile not found with id: " + profileId);
+    }
+}
